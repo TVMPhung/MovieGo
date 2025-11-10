@@ -13,61 +13,160 @@ import {
   Linking,
   Alert,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as Location from 'expo-location';
 
 const MapScreen = ({ navigation }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [locationPermission, setLocationPermission] = useState(null);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
-  // Cinema locations data
+  // Request location permission on component mount
+  useEffect(() => {
+    requestLocationPermission();
+  }, []);
+
+  // Request location permission
+  const requestLocationPermission = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status === 'granted');
+      
+      if (status === 'granted') {
+        // Optionally get location immediately
+        // await getCurrentLocation();
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (error) {
+      console.error('Error requesting location permission:', error);
+      setLocationPermission(false);
+    }
+  };
+
+  // Get current location (works for Can Tho City and all Vietnam)
+  const getCurrentLocation = async () => {
+    setLoadingLocation(true);
+    try {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      
+      if (status !== 'granted') {
+        Alert.alert(
+          'Yêu cầu quyền truy cập vị trí',
+          'Vui lòng bật dịch vụ vị trí để sử dụng chỉ đường từ vị trí hiện tại của bạn.',
+          [
+            { text: 'Hủy', style: 'cancel' },
+            { text: 'Mở Cài đặt', onPress: () => Linking.openSettings() },
+          ]
+        );
+        setLoadingLocation(false);
+        return null;
+      }
+
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        timeout: 10000,
+        maximumAge: 60000, // Cache for 1 minute
+      });
+
+      const userLocation = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        accuracy: location.coords.accuracy,
+      };
+
+      setCurrentLocation(userLocation);
+      setLoadingLocation(false);
+      return userLocation;
+    } catch (error) {
+      setLoadingLocation(false);
+      console.error('Error getting current location:', error);
+      
+      Alert.alert(
+        'Lỗi vị trí',
+        'Không thể lấy vị trí hiện tại của bạn. Vui lòng kiểm tra xem dịch vụ vị trí đã được bật chưa.',
+        [{ text: 'OK' }]
+      );
+      return null;
+    }
+  };
+
+  // Cinema locations data - Vietnamese locations
   const cinemaLocations = [
     {
       id: 1,
-      name: 'MovieGo Cinema Downtown',
-      address: '123 Main Street, Downtown',
-      city: 'City Center',
-      phone: '+1 (555) 123-4567',
-      latitude: 40.7128,
-      longitude: -74.0060,
+      name: 'MovieGo Cinema Saigon Center',
+      address: '65 Lê Lợi, Phường Bến Nghé, Quận 1',
+      city: 'Hồ Chí Minh',
+      phone: '+84 28 3822 5678',
+      latitude: 10.7733,
+      longitude: 106.7010,
       screens: 8,
-      parking: 'Available',
+      parking: 'Bãi đậu xe có sẵn',
       facilities: ['IMAX', '3D', 'Dolby Atmos', 'VIP Lounge'],
     },
     {
       id: 2,
-      name: 'MovieGo Cinema Mall',
-      address: '456 Shopping Mall Blvd',
-      city: 'West Side',
-      phone: '+1 (555) 234-5678',
-      latitude: 40.7580,
-      longitude: -73.9855,
+      name: 'MovieGo Cinema Vincom Center',
+      address: '72 Lê Thánh Tôn, Phường Bến Nghé, Quận 1',
+      city: 'Hồ Chí Minh',
+      phone: '+84 28 3936 9999',
+      latitude: 10.7771,
+      longitude: 106.7020,
       screens: 12,
-      parking: 'Underground Parking',
-      facilities: ['IMAX', '4DX', 'Dolby Atmos', 'Food Court'],
+      parking: 'Bãi đậu xe ngầm',
+      facilities: ['IMAX', '4DX', 'Dolby Atmos', 'Khu ẩm thực'],
     },
     {
       id: 3,
-      name: 'MovieGo Cinema Plaza',
-      address: '789 Entertainment Plaza',
-      city: 'East District',
-      phone: '+1 (555) 345-6789',
-      latitude: 40.7489,
-      longitude: -73.9680,
-      screens: 6,
-      parking: 'Street Parking',
-      facilities: ['3D', 'Dolby Atmos', 'Cafe'],
+      name: 'MovieGo Cinema Landmark 81',
+      address: '720A Điện Biên Phủ, Phường 22, Quận Bình Thạnh',
+      city: 'Hồ Chí Minh',
+      phone: '+84 28 3622 6888',
+      latitude: 10.7946,
+      longitude: 106.7217,
+      screens: 10,
+      parking: 'Bãi đậu xe nhiều tầng',
+      facilities: ['IMAX', '3D', 'Premium Seating', 'Nhà hàng'],
     },
     {
       id: 4,
-      name: 'MovieGo Cinema Park',
-      address: '321 Park Avenue',
-      city: 'North Side',
-      phone: '+1 (555) 456-7890',
-      latitude: 40.7829,
-      longitude: -73.9654,
-      screens: 10,
-      parking: 'Multi-level Parking',
-      facilities: ['IMAX', '3D', 'Premium Seating', 'Restaurant'],
+      name: 'MovieGo Cinema Hà Nội',
+      address: '191 Bà Triệu, Phường Lê Đại Hành, Quận Hai Bà Trưng',
+      city: 'Hà Nội',
+      phone: '+84 24 3974 3333',
+      latitude: 21.0136,
+      longitude: 105.8474,
+      screens: 9,
+      parking: 'Bãi đậu xe ngoài trời',
+      facilities: ['3D', 'Dolby Atmos', 'Quán café', 'VIP Lounge'],
+    },
+    {
+      id: 5,
+      name: 'MovieGo Cinema Đà Nẵng',
+      address: '255-257 Hùng Vương, Phường Vĩnh Trung, Quận Thanh Khê',
+      city: 'Đà Nẵng',
+      phone: '+84 236 3656 999',
+      latitude: 16.0678,
+      longitude: 108.2068,
+      screens: 7,
+      parking: 'Bãi đậu xe có sẵn',
+      facilities: ['3D', 'Dolby Atmos', 'Quán ăn nhanh'],
+    },
+    {
+      id: 6,
+      name: 'MovieGo Cinema Cần Thơ',
+      address: '209 Đường 30 Tháng 4, Phường Xuân Khánh, Quận Ninh Kiều',
+      city: 'Cần Thơ',
+      phone: '+84 292 3812 345',
+      latitude: 10.0452,
+      longitude: 105.7469,
+      screens: 8,
+      parking: 'Bãi đậu xe rộng rãi',
+      facilities: ['IMAX', '3D', 'Dolby Atmos', 'Khu vui chơi trẻ em'],
     },
   ];
 
@@ -180,7 +279,7 @@ const MapScreen = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Cinema Locations</Text>
         <Text style={styles.headerSubtitle}>
-          Find a MovieGo cinema near you
+          Tìm rạp chiếu phim MovieGo gần bạn
         </Text>
       </View>
 
