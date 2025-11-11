@@ -1,9 +1,4 @@
-/**
- * MEMBER 5: Ticket History Screen
- * Displays user's booking history
- */
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,

@@ -1,8 +1,3 @@
-/**
- * MEMBER 2: Booking Screen
- * Multi-step booking flow: Date → Movie → Showtime → Seat Selection
- */
-
 import React, { useState, useEffect } from 'react';
 import {
   View,

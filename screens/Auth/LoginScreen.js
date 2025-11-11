@@ -1,8 +1,3 @@
-/**
- * MEMBER 1: Login Screen
- * Handles user authentication
- */
-
 import React, { useState } from 'react';
 import {
   View,

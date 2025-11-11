@@ -1,8 +1,3 @@
-/**
- * MEMBER 4: Chat Screen
- * Customers can chat with store/customer support
- */
-
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View,

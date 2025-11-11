@@ -1,8 +1,3 @@
-/**
- * MEMBER 1: Movies List Screen
- * Displays all available movies with search and filter functionality
- */
-
 import React, { useState, useEffect } from 'react';
 import {
   View,

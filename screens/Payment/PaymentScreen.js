@@ -1,8 +1,3 @@
-/**
- * MEMBER 3: Payment Screen
- * Handles mock payment processing and booking confirmation
- */
-
 import React, { useState } from 'react';
 import {
   View,

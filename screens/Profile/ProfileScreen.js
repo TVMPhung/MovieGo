@@ -1,8 +1,3 @@
-/**
- * MEMBER 5: Profile Screen
- * View and edit user profile information
- */
-
 import React, { useState, useEffect } from 'react';
 import {
   View,

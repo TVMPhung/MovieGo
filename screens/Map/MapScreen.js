@@ -1,8 +1,3 @@
-/**
- * MEMBER 4: Map Screen
- * Shows cinema/store locations on a map
- */
-
 import React, { useState, useEffect } from 'react';
 import {
   View,

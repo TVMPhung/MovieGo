@@ -1,8 +1,3 @@
-/**
- * MEMBER 3: Booking Confirmation Screen
- * Shows successful booking details
- */
-
 import React, { useEffect, useState } from 'react';
 import {
   View,

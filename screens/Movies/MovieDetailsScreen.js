@@ -1,8 +1,3 @@
-/**
- * MEMBER 2: Movie Details Screen
- * Shows comprehensive movie information and available showtimes
- */
-
 import React, { useState, useEffect } from 'react';
 import {
   View,

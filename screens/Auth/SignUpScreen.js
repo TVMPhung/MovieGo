@@ -1,8 +1,3 @@
-/**
- * MEMBER 1: Sign Up Screen
- * Handles user registration
- */
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
