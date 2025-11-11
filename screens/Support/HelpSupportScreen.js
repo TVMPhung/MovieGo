@@ -16,6 +16,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 const HelpSupportScreen = ({ navigation }) => {
+  // Track which FAQ is expanded
   const [expandedFaq, setExpandedFaq] = useState(null);
 
   // FAQ Data
@@ -88,18 +89,22 @@ const HelpSupportScreen = ({ navigation }) => {
     },
   ];
 
+  // Open email app with support address
   const handleEmail = () => {
     Linking.openURL('mailto:support@moviego.com?subject=MovieGo Support Request');
   };
 
+  // Open phone app to call support
   const handleCall = () => {
     Linking.openURL('tel:+15551234567');
   };
 
+  // Open MovieGo website in browser
   const handleWebsite = () => {
     Linking.openURL('https://www.moviego.com');
   };
 
+  // Toggle FAQ item expand/collapse
   const toggleFaq = (id) => {
     setExpandedFaq(expandedFaq === id ? null : id);
   };

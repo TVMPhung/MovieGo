@@ -60,7 +60,7 @@ const ChatScreen = ({ navigation }) => {
     ],
   };
 
-  // Initialize with welcome message
+  // Initialize chat with welcome message on mount
   useEffect(() => {
     const welcomeMessage = {
       id: Date.now().toString(),
@@ -71,6 +71,7 @@ const ChatScreen = ({ navigation }) => {
     setMessages([welcomeMessage]);
   }, []);
 
+  // Detect user intent from message keywords
   const detectIntent = (text) => {
     const lowerText = text.toLowerCase();
     
@@ -92,10 +93,12 @@ const ChatScreen = ({ navigation }) => {
     return 'default';
   };
 
+  // Get random response for variety
   const getRandomResponse = (responseArray) => {
     return responseArray[Math.floor(Math.random() * responseArray.length)];
   };
 
+  // Send message and get bot response
   const handleSend = () => {
     if (inputText.trim() === '') return;
 
@@ -130,6 +133,7 @@ const ChatScreen = ({ navigation }) => {
     }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
   };
 
+  // Format timestamp to readable time
   const formatTime = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleTimeString('en-US', {
@@ -138,6 +142,7 @@ const ChatScreen = ({ navigation }) => {
     });
   };
 
+  // Render quick reply buttons
   const renderQuickReplies = () => {
     const quickReplies = [
       { icon: 'ticket', text: 'Book Tickets', message: 'How do I book tickets?' },
@@ -168,6 +173,7 @@ const ChatScreen = ({ navigation }) => {
     );
   };
 
+  // Render individual message bubble
   const renderMessage = ({ item }) => {
     const isUser = item.sender === 'user';
 

@@ -42,6 +42,7 @@ const ProfileScreen = ({ navigation }) => {
   const [fullNameError, setFullNameError] = useState('');
   const [phoneError, setPhoneError] = useState('');
 
+  // Sync form fields with user data on mount
   useEffect(() => {
     if (user) {
       setFullName(user.fullName || '');
@@ -95,7 +96,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  // Validate full name on change
+  // Validate full name with real-time feedback
   const handleFullNameChange = (text) => {
     setFullName(text);
     if (isEditing) {
@@ -104,7 +105,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  // Validate phone on change
+  // Validate phone number with real-time feedback
   const handlePhoneChange = (text) => {
     setPhone(text);
     if (isEditing) {
@@ -113,6 +114,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  // Validate and save profile changes to database
   const handleSave = async () => {
     // Run validations
     const fullNameValidation = validateFullName(fullName);
@@ -161,6 +163,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  // Discard changes and restore original values
   const handleCancel = () => {
     // Reset to original values
     setFullName(user.fullName || '');
@@ -171,6 +174,7 @@ const ProfileScreen = ({ navigation }) => {
     setIsEditing(false);
   };
 
+  // Confirm and execute logout
   const handleLogout = () => {
     Alert.alert(
       'Logout',

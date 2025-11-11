@@ -24,7 +24,7 @@ const NotificationScreen = ({ navigation }) => {
     systemUpdates: false,
   });
 
-  // Toggle preference
+  // Toggle notification preference on/off
   const togglePreference = (key) => {
     setPreferences(prev => ({
       ...prev,
@@ -32,7 +32,7 @@ const NotificationScreen = ({ navigation }) => {
     }));
   };
 
-  // Notification preference item component
+  // Render notification preference item with toggle
   const NotificationItem = ({ icon, title, description, value, onToggle }) => (
     <View style={styles.notificationItem}>
       <View style={styles.itemLeft}>

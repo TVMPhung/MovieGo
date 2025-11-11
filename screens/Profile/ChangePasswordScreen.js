@@ -46,7 +46,7 @@ const ChangePasswordScreen = ({ navigation }) => {
   const [newPasswordError, setNewPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  // Validate current password
+  // Validate current password on input change
   const handleCurrentPasswordChange = (text) => {
     setCurrentPassword(text);
     if (text.length === 0) {
@@ -56,7 +56,7 @@ const ChangePasswordScreen = ({ navigation }) => {
     }
   };
 
-  // Validate new password
+  // Validate new password and check match with confirm
   const handleNewPasswordChange = (text) => {
     setNewPassword(text);
     const validation = validatePassword(text);
@@ -69,13 +69,14 @@ const ChangePasswordScreen = ({ navigation }) => {
     }
   };
 
-  // Validate confirm password
+  // Validate confirm password matches new password
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
     const validation = validatePasswordMatch(newPassword, text);
     setConfirmPasswordError(validation.error);
   };
 
+  // Validate, verify current password, and save new password
   const handleChangePassword = async () => {
     // Validate all fields
     let hasErrors = false;

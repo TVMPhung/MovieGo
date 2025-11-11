@@ -29,7 +29,7 @@ const MapScreen = ({ navigation }) => {
     requestLocationPermission();
   }, []);
 
-  // Request location permission
+  // Request location permission from user
   const requestLocationPermission = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -47,7 +47,7 @@ const MapScreen = ({ navigation }) => {
     }
   };
 
-  // Get current location (works for Can Tho City and all Vietnam)
+  // Get user's current GPS location
   const getCurrentLocation = async () => {
     setLoadingLocation(true);
     try {
@@ -170,6 +170,7 @@ const MapScreen = ({ navigation }) => {
     },
   ];
 
+  // Open cinema location in device's native maps app
   const openInMaps = (location) => {
     const { latitude, longitude, name } = location;
     const url = Platform.select({
@@ -188,6 +189,7 @@ const MapScreen = ({ navigation }) => {
     });
   };
 
+  // Open phone app to call cinema
   const callCinema = (phone) => {
     const phoneUrl = `tel:${phone}`;
     Linking.canOpenURL(phoneUrl).then((supported) => {
@@ -199,6 +201,7 @@ const MapScreen = ({ navigation }) => {
     });
   };
 
+  // Render expandable cinema location card
   const renderLocationCard = (location) => (
     <TouchableOpacity
       key={location.id}
